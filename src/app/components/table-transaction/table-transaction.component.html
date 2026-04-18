@@ -17,8 +17,8 @@
       <td>{{ t.type }}</td>
       <td>{{ t.amount }}</td>
 
-      <td [ngClass]="t.status === 'FAILED' ? 'statusFailed' : 'statusPending'">
-        {{ t.status === 'FAILED' ? '⚠️' : '❌' }} {{ t.status }}
+      <td [ngClass]="t.status === 'SUCCESS' ? 'statusSuccess' : 'statusPending'">
+        {{ t.status === 'SUCCESS' ? '✅' : '⏳' }} {{ t.status }}
       </td>
 
       <td>{{ t.description }}</td>

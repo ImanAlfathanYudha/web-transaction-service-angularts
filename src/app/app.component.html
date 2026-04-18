@@ -2,6 +2,7 @@
 <upload-component></upload-component>
 <app-transaction-summary></app-transaction-summary>
 <div *ngIf="transactions.length > 0; else empty">
+  <p>Successful Transaction</p>
   <app-table-transaction></app-table-transaction>
 </div>
 
