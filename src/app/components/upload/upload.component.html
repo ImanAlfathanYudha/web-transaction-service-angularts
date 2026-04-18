@@ -1,0 +1,12 @@
+<div class="upload">
+  <label for="csv-upload" class="uploadLabel">
+    Upload CSV File
+  </label>
+
+  <input
+    id="csv-upload"
+    type="file"
+    accept=".csv"
+    (change)="onFileSelected($event)"
+  />
+</div>
