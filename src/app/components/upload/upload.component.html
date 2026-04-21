@@ -1,12 +1,8 @@
-<div class="upload">
-  <label for="csv-upload" class="uploadLabel">
+<div class="uploadSection">
+  <label class="labelUpload" for="csv-upload" class="uploadLabel">
     Upload CSV File
   </label>
 
-  <input
-    id="csv-upload"
-    type="file"
-    accept=".csv"
-    (change)="onFileSelected($event)"
-  />
+  <input type="file" (change)="onFileSelected($event)" [disabled]="loading" />
+
 </div>

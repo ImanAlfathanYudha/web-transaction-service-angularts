@@ -8,6 +8,13 @@ import { CsvUploadService } from 'src/app/services/csv-upload.service';
 })
 export class UploadComponent {
   constructor(private csvService: CsvUploadService) { }
+  loading = false;
+
+  ngOnInit() {
+    this.csvService.loading$.subscribe(val => {
+      this.loading = val;
+    });
+  }
 
   onFileSelected(event: Event) {
     console.log('tes onFileSelected onclick ', event)
@@ -23,13 +30,10 @@ export class UploadComponent {
       next: (res) => {
         alert('✅ File uploaded successfully!');
         console.log('tes onFileSelected response:', res);
-
-        if (res?.Notes) {
-          alert('⚠️ ' + res.Notes);
-        }
       },
       error: (err) => {
-        alert('❌ Upload failed');
+        console.log('tes error onFileSelected response:', );
+        alert('❌ Upload failed. ' + err);
         console.error(err);
       }
     });
