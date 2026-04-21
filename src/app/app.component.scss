@@ -15,3 +15,23 @@ p {
     margin: 10px auto;
     width: fit-content;
 }
+
+.tab-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button.active {
+  background: #007bff;
+  color: white;
+}

@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private csvService: CsvUploadService) { }
   loading = false;
   error: string | null = null;
-
+  activeTab: 'transactions' | 'issues' = 'transactions';
   ngOnInit() {
     this.csvService.transactions$.subscribe(data => {
       console.log('tes table data on app ', data)

@@ -4,9 +4,18 @@
 <p *ngIf="error" class="error">
   ❌ {{ error }}
 </p>
-<div *ngIf="transactions.length > 0 && !loading; else empty">
-  <p>Successful Transaction</p>
-  <app-table-transaction></app-table-transaction>
+<div class="tab-container">
+  <button (click)="activeTab = 'transactions'" [class.active]="activeTab === 'transactions'">
+    Transactions
+  </button>
+
+  <button (click)="activeTab = 'issues'" [class.active]="activeTab === 'issues'">
+    Issues
+  </button>
+</div>
+<div *ngIf="!loading">
+  <app-table-transaction *ngIf="activeTab === 'transactions'"></app-table-transaction>
+  <app-table-issue *ngIf="activeTab === 'issues'"></app-table-issue>
 </div>
 <p *ngIf="loading">⏳ Uploading & fetching data...</p>
 <ng-template #empty>
