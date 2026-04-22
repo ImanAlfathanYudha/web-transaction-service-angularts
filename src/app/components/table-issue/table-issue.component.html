@@ -1,0 +1,19 @@
+<table>
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let i of issues">
+      <td>{{ i.timestamp }}</td>
+      <td>{{ i.name }}</td>
+      <td>{{ i.status }}</td>
+      <td>{{ i.description }}</td>
+    </tr>
+  </tbody>
+</table>
