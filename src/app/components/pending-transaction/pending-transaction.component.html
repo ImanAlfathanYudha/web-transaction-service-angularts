@@ -1,0 +1,19 @@
+<h2>Pending Transactions</h2>
+
+<table *ngIf="pendingTransactions.length > 0">
+  <tr>
+    <th>Name</th>
+    <th>Amount</th>
+    <th>Status</th>
+  </tr>
+
+  <tr *ngFor="let t of pendingTransactions">
+    <td>{{ t.name }}</td>
+    <td>{{ t.amount }}</td>
+    <td class="statusPending">{{ t.status }}</td>
+  </tr>
+</table>
+
+<p *ngIf="pendingTransactions.length === 0">
+  No pending transactions
+</p>
