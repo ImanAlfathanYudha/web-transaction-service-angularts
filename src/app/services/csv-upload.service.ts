@@ -34,6 +34,9 @@ export class CsvUploadService {
   private errorSubject = new BehaviorSubject<string | null>(null);
   error$ = this.errorSubject.asObservable();
 
+  private pendingTransactionSubject = new BehaviorSubject<Transaction[]>([]);
+  pendingTransaction$ = this.pendingTransactionSubject.asObservable();
+
   //Karena HttpClient di Angular memang mengembalikan Observable. Karena fungsi yang return async result, Observable dipakai untuk handle async flow (HTTP request)
   uploadTransactionCSV(file: File): Observable<any> {
     const formData = new FormData();
@@ -54,15 +57,17 @@ export class CsvUploadService {
         const transactionData = res.transactions?.Data?.transactions || {};
         const balanceData = res.transactions?.Data?.total_balance || {};
         const issueData = res.issues?.Data?.issues || [];
+        const pendingTransactionData = issueData?.filter((i: any) => i.status === 'PENDING')
 
         this.transactionsSubject.next(transactionData); //cara update data + ngasih tau semua subscriber kalau datanya berubah. mirip update state (mirip setState)
         this.issuesSubject.next(issueData)
+        this.pendingTransactionSubject.next(pendingTransactionData); 
 
         const summary: TransactionSummary = {
           totalTransactions: transactionData?.length || 0,
           totalBalance: balanceData || 0,
-          totalFailed: issueData?.filter((i: any) => i.status === 'FAILED').length,
-          totalPending: issueData?.filter((i: any) => i.status === 'PENDING').length
+          totalFailed: issueData?.filter((i: any) => i.status === 'FAILED')?.length,
+          totalPending: pendingTransactionData?.length
         };
 
         this.summarySubject.next(summary); //cara update data + ngasih tau semua subscriber kalau datanya berubah. mirip update state (mirip setState)

@@ -8,13 +8,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { TableTransactionComponent } from './components/table-transaction/table-transaction.component';
 import { TransactionSummaryComponent } from './components/transaction-summary/transaction-summary.component';
 import { TableIssueComponent } from './components/table-issue/table-issue.component';
+import { PendingTransactionComponent } from './components/pending-transaction/pending-transaction.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     TableTransactionComponent,
     TransactionSummaryComponent,
-    TableIssueComponent
+    TableIssueComponent,
+    PendingTransactionComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
