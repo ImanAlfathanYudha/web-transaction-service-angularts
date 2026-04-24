@@ -5,12 +5,16 @@
     <th>Name</th>
     <th>Amount</th>
     <th>Status</th>
+    <th>Description</th>
+    <th></th>
   </tr>
 
   <tr *ngFor="let t of pendingTransactions">
     <td>{{ t.name }}</td>
     <td>{{ t.amount }}</td>
     <td class="statusPending">{{ t.status }}</td>
+    <td>{{t.description}}</td>
+    <td></td>
   </tr>
 </table>
 
