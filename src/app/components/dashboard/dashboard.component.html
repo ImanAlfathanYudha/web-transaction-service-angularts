@@ -13,6 +13,7 @@
     Issues
   </button>
 </div>
+
 <div *ngIf="!loading">
   <app-table-transaction *ngIf="activeTab === 'transactions'"></app-table-transaction>
   <app-table-issue *ngIf="activeTab === 'issues'"></app-table-issue>
