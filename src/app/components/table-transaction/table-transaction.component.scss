@@ -50,3 +50,16 @@ td {
 .pagination span {
     font-weight: 500;
 }
+
+.page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: flex-end;
+}
+
+.page-size select {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
