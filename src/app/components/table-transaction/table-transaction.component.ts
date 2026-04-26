@@ -42,5 +42,10 @@ export class TableTransactionComponent {
   get totalPages(): number {
     return Math.ceil(this.transactions.length / this.pageSize);
   }
+
+  onPageSizeChange(size: number) {
+    this.pageSize = size;
+    this.currentPage = 1;
+  }
 }
 
