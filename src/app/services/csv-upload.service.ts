@@ -61,11 +61,11 @@ export class CsvUploadService {
 
         this.transactionsSubject.next(transactionData); //cara update data + ngasih tau semua subscriber kalau datanya berubah. mirip update state (mirip setState)
         this.issuesSubject.next(issueData)
-        this.pendingTransactionSubject.next(pendingTransactionData); 
+        this.pendingTransactionSubject.next(pendingTransactionData);
 
         const summary: TransactionSummary = {
           totalTransactions: transactionData?.length || 0,
-          totalBalance: balanceData || 0,
+          totalBalance: JSON.stringify(balanceData) === '{}' ? 0 : balanceData,
           totalFailed: issueData?.filter((i: any) => i.status === 'FAILED')?.length,
           totalPending: pendingTransactionData?.length
         };
