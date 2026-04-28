@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, finalize, forkJoin, Observable, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { Transaction, TransactionSummary } from '../model/transaction.model';
 
 const API_URL_UPLOAD_TRANSACTION = 'http://localhost:8800/api/v1/transaction/upload';
@@ -36,6 +36,44 @@ export class CsvUploadService {
 
   private pendingTransactionSubject = new BehaviorSubject<Transaction[]>([]);
   pendingTransaction$ = this.pendingTransactionSubject.asObservable();
+
+  private currentPageSubject = new BehaviorSubject<number>(1);
+  currentPage$ = this.currentPageSubject.asObservable();
+
+  private pageSizeSubject = new BehaviorSubject<number>(5);
+  pageSize$ = this.pageSizeSubject.asObservable();
+
+  paginatedTransactions$ = combineLatest([
+    this.transactions$,
+    this.currentPage$,
+    this.pageSize$
+  ]).pipe(
+    map(([transactions, currentPage, pageSize]) => {
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+
+      return transactions.slice(start, end);
+    })
+  );
+
+  setPage(page: number) {
+    this.currentPageSubject.next(page);
+  }
+
+  setPageSize(size: number) {
+    this.pageSizeSubject.next(size);
+    this.currentPageSubject.next(1); // reset page
+  }
+
+  totalPages$ = combineLatest([
+    this.transactions$,
+    this.pageSize$
+  ]).pipe(
+    map(([transactions, pageSize]) => {
+      const total = Math.ceil(transactions.length / pageSize);
+      return total > 0 ? total : 1; 
+    })
+  );
 
   //Karena HttpClient di Angular memang mengembalikan Observable. Karena fungsi yang return async result, Observable dipakai untuk handle async flow (HTTP request)
   uploadTransactionCSV(file: File): Observable<any> {
