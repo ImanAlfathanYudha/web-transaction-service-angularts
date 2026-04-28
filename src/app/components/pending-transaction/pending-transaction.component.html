@@ -1,6 +1,6 @@
 <h2>Pending Transactions</h2>
 
-<table *ngIf="pendingTransactions.length > 0">
+<table *ngIf="paginatedPendingTransactions.length > 0">
   <tr>
     <th>Name</th>
     <th>Amount</th>
@@ -9,7 +9,7 @@
     <th></th>
   </tr>
 
-  <tr *ngFor="let t of pendingTransactions">
+  <tr *ngFor="let t of paginatedPendingTransactions">
     <td>{{ t.name }}</td>
     <td>{{ t.amount }}</td>
     <td class="statusPending">{{ t.status }}</td>
@@ -17,7 +17,34 @@
     <td></td>
   </tr>
 </table>
+<div class="pagination">
 
-<p *ngIf="pendingTransactions.length === 0">
+  <div class="page-size">
+    <label>Show:</label>
+
+    <select (change)="onPageSizeChange($any($event.target).value)">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+
+    <span>items per page</span>
+    <!-- tombol sebelumnya -->
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      ⬅ Prev
+    </button>
+
+    <!-- info halaman -->
+    <span>
+      Page {{ currentPage }} / {{ totalPages }}
+    </span>
+
+    <!-- tombol berikutnya -->
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next ➡
+    </button>
+  </div>
+</div>
+<p *ngIf="paginatedPendingTransactions.length === 0">
   No pending transactions
 </p>
