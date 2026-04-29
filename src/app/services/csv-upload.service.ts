@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, map, Observable, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, finalize, forkJoin, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { Transaction, TransactionSummary } from '../model/transaction.model';
 
 const API_URL_UPLOAD_TRANSACTION = 'http://localhost:8800/api/v1/transaction/upload';
@@ -121,6 +121,11 @@ export class CsvUploadService {
         this.loadingSubject.next(false);
       })
     );
+  }
+
+  markTransactionAsSuccess(id: number): Observable<any> {
+    console.log('tes markTransactionAsSuccess ', id)
+    return of(null);
   }
 }
 
