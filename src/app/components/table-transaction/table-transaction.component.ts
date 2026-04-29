@@ -8,44 +8,25 @@ import { CsvUploadService } from 'src/app/services/csv-upload.service';
   styleUrls: ['./table-transaction.component.scss']
 })
 export class TableTransactionComponent {
-  transactions: any[] = [];
-  pageSize = 5;
+  paginatedTransactions$ = this.csvService.paginatedTransactions$;
+  totalPages$ = this.csvService.totalPages$;
+
   currentPage = 1;
   constructor(private csvService: CsvUploadService) { }
-
-  ngOnInit() {
-    this.csvService.transactions$.subscribe(data => {
-      console.log('tes data tabel ', data)
-      this.transactions = data;
-    });
-  }
-
-  get paginatedTransactions(): Transaction[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-
-    return this.transactions.slice(start, end);
-  }
-
   nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-    }
+    this.currentPage++;
+    this.csvService.setPage(this.currentPage);
   }
 
   prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.transactions.length / this.pageSize);
+    this.currentPage--;
+    this.csvService.setPage(this.currentPage);
   }
 
   onPageSizeChange(size: number) {
-    this.pageSize = size;
     this.currentPage = 1;
+    this.csvService.setPageSize(+size);
   }
+
 }
 
