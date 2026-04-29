@@ -54,4 +54,16 @@ export class PendingTransactionComponent {
     this.currentPage = 1;
     this.paginateTransaction()
   }
+
+  markAsSuccess(id: number) {
+  this.csvService.markTransactionAsSuccess(id).subscribe({
+    next: () => {
+      alert('✅ Transaction updated');
+    },
+    error: (err) => {
+      alert('❌ Failed to update');
+      console.error(err);
+    }
+  });
+}
 }
