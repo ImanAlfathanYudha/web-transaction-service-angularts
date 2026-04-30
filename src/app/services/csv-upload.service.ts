@@ -6,6 +6,7 @@ import { Transaction, TransactionSummary } from '../model/transaction.model';
 const API_URL_UPLOAD_TRANSACTION = 'http://localhost:8800/api/v1/transaction/upload';
 const API_URL_GET_TRANSACTION = 'http://localhost:8800/api/v1/transaction/balance'
 const API_URL_GET_ISSUE = 'http://localhost:8800/api/v1/transaction/issues'
+const API_URL_EDIT_TRANSACTION_SUCCESS = 'http://localhost:8800/api/v1/transaction/edit'
 @Injectable({
   providedIn: 'root'
 })
@@ -71,26 +72,15 @@ export class CsvUploadService {
   ]).pipe(
     map(([transactions, pageSize]) => {
       const total = Math.ceil(transactions.length / pageSize);
-      return total > 0 ? total : 1; 
+      return total > 0 ? total : 1;
     })
   );
 
-  //Karena HttpClient di Angular memang mengembalikan Observable. Karena fungsi yang return async result, Observable dipakai untuk handle async flow (HTTP request)
-  uploadTransactionCSV(file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // 🔥 START loading
-    this.loadingSubject.next(true);
-
-    return this.http.post(API_URL_UPLOAD_TRANSACTION, formData).pipe(//dikasih pipe agar hasil dari hit endpoint bisa dimodifikasi (Minimal disimpen aja).
-      switchMap(() =>
-        forkJoin({
-          transactions: this.http.get(API_URL_GET_TRANSACTION),
-          issues: this.http.get(API_URL_GET_ISSUE)
-        })
-      ),
-
+  getAllTransactions(): Observable<any> {
+    return forkJoin({
+      transactions: this.http.get(API_URL_GET_TRANSACTION),
+      issues: this.http.get(API_URL_GET_ISSUE)
+    }).pipe(//dikasih pipe agar hasil dari hit endpoint bisa dimodifikasi (Minimal disimpen aja).
       tap((res: any) => {
         const transactionData = res.transactions?.Data?.transactions || {};
         const balanceData = res.transactions?.Data?.total_balance || {};
@@ -109,14 +99,25 @@ export class CsvUploadService {
         };
 
         this.summarySubject.next(summary); //cara update data + ngasih tau semua subscriber kalau datanya berubah. mirip update state (mirip setState)
-      }),
+      })
+    )
+  }
 
+  //Karena HttpClient di Angular memang mengembalikan Observable. Karena fungsi yang return async result, Observable dipakai untuk handle async flow (HTTP request)
+  uploadTransactionCSV(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    // Start loading (success)
+    this.loadingSubject.next(true);
+
+    return this.http.post(API_URL_UPLOAD_TRANSACTION, formData).pipe(
+      switchMap(() => this.getAllTransactions()),
       catchError((err) => {
         console.error('❌ ERROR:', err);
         this.errorSubject.next('Upload failed. Please try again.');
         return throwError(() => err?.error?.Message);
       }),
-      // 🔥 STOP loading (success)
+      // Stop loading (success)
       finalize(() => {
         this.loadingSubject.next(false);
       })
@@ -124,8 +125,13 @@ export class CsvUploadService {
   }
 
   markTransactionAsSuccess(id: number): Observable<any> {
-    console.log('tes markTransactionAsSuccess ', id)
-    return of(null);
+    return this.http.put(`${API_URL_EDIT_TRANSACTION_SUCCESS}/${id}/success`, {}).pipe(
+     switchMap(() => this.getAllTransactions()),
+      catchError((err) => {
+        console.error('failed to update transaction status to success:', err);
+        return throwError(() => err);
+      })
+    );
   }
 }
 

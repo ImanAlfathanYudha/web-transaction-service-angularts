@@ -2,6 +2,7 @@
 
 <table *ngIf="paginatedPendingTransactions.length > 0">
   <tr>
+    <th>Timestamp</th>
     <th>Name</th>
     <th>Amount</th>
     <th>Status</th>
@@ -10,6 +11,7 @@
   </tr>
 
   <tr *ngFor="let t of paginatedPendingTransactions">
+    <td>{{ t.timestamp }}</td>
     <td>{{ t.name }}</td>
     <td>{{ t.amount }}</td>
     <td class="statusPending">{{ t.status }}</td>
