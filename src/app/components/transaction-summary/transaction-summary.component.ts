@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionSummary } from 'src/app/model/transaction.model';
 import { CsvUploadService } from 'src/app/services/csv-upload.service';
 
@@ -8,13 +8,7 @@ import { CsvUploadService } from 'src/app/services/csv-upload.service';
   styleUrls: ['./transaction-summary.component.scss']
 })
 export class TransactionSummaryComponent {
-  summary: TransactionSummary = {
-    totalBalance: 0,
-    totalTransactions: 0,
-    totalFailed: 0,
-    totalPending: 0
-  };
-
+  @Input() summary!: TransactionSummary;
   constructor(private csvService: CsvUploadService) { }
 
   ngOnInit() {
