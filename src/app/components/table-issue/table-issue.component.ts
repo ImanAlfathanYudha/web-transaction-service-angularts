@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Transaction } from 'src/app/model/transaction.model';
-import { CsvUploadService } from 'src/app/services/csv-upload.service';
 
 @Component({
   selector: 'app-table-issue',
@@ -8,26 +7,18 @@ import { CsvUploadService } from 'src/app/services/csv-upload.service';
   styleUrls: ['./table-issue.component.scss']
 })
 export class TableIssueComponent {
-  issuesTransactions: Transaction[] = [];
+  @Input() issuesTransactions: Transaction[] = [];
   paginatedIssuesTransactions: Transaction[] = [];
   pageSize = 5;
   currentPage = 1;
 
-  constructor(private csvService: CsvUploadService) { }
-
-
   ngOnInit() {
-    this.csvService.issues$.subscribe(data => {
-      this.issuesTransactions = data
-    });
-    console.log('tes pendingTransactions comp ', this.issuesTransactions)
     this.paginateTransaction()
   }
 
   paginateTransaction() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-
     this.paginatedIssuesTransactions = this.issuesTransactions.slice(start, end);
   }
 
