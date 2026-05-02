@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Transaction, TransactionSummary } from 'src/app/model/transaction.model';
 import { CsvUploadService } from 'src/app/services/csv-upload.service';
 
 @Component({
@@ -8,7 +9,10 @@ import { CsvUploadService } from 'src/app/services/csv-upload.service';
 })
 export class DashboardComponent {
   title = 'csv-viewer-app';
-  transactions: any[] = [];
+  transactions: Transaction[] = [];
+  summary!: TransactionSummary;
+  issuesTransactions: Transaction[] = [];
+  paginatedTransactions$ = this.csvService.paginatedTransactions$;
 
   constructor(private csvService: CsvUploadService) { }
   loading = false;
@@ -16,8 +20,10 @@ export class DashboardComponent {
   activeTab: 'transactions' | 'issues' = 'transactions';
   ngOnInit() {
     this.csvService.transactions$.subscribe(data => {
-      console.log('tes table data on app ', data)
       this.transactions = data || [];
+    });
+    this.csvService.issues$.subscribe(data => {
+      this.issuesTransactions = data
     });
     this.csvService.loading$.subscribe(val => {
       this.loading = val;

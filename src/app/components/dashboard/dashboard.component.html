@@ -1,6 +1,6 @@
 <h1>CSV Viewer App</h1>
 <upload-component></upload-component>
-<app-transaction-summary></app-transaction-summary>
+<app-transaction-summary [summary]="summary"></app-transaction-summary>
 <p *ngIf="error" class="error">
   ❌ {{ error }}
 </p>
@@ -15,8 +15,10 @@
 </div>
 
 <div *ngIf="!loading">
-  <app-table-transaction *ngIf="activeTab === 'transactions'"></app-table-transaction>
-  <app-table-issue *ngIf="activeTab === 'issues'"></app-table-issue>
+  <app-table-transaction *ngIf="activeTab === 'transactions'"
+    [paginatedTransactions]="paginatedTransactions$"></app-table-transaction>
+
+  <app-table-issue *ngIf="activeTab === 'issues'" [issuesTransactions]="issuesTransactions"></app-table-issue>
 </div>
 <p *ngIf="loading">⏳ Uploading & fetching data...</p>
 <ng-template #empty>
