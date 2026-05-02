@@ -10,7 +10,7 @@
     </tr>
   </thead>
 
-  <tbody *ngIf="(paginatedTransactions$ | async) as data">
+  <tbody *ngIf="(paginatedTransactions  | async) as data">
     <ng-container *ngIf="data.length > 0; else empty">
       <tr *ngFor="let t of data">
         <td>{{ t.timestamp }}</td>
