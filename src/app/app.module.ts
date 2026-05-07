@@ -10,6 +10,8 @@ import { TransactionSummaryComponent } from './components/transaction-summary/tr
 import { TableIssueComponent } from './components/table-issue/table-issue.component';
 import { PendingTransactionComponent } from './components/pending-transaction/pending-transaction.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FormDetailComponent } from './components/form-detail/form-detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,11 +20,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     TransactionSummaryComponent,
     TableIssueComponent,
     PendingTransactionComponent,
-    DashboardComponent
+    DashboardComponent,
+    FormDetailComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, HttpClientModule
+    AppRoutingModule, HttpClientModule, ReactiveFormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
