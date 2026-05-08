@@ -20,7 +20,6 @@ export class PendingTransactionComponent {
         t => t.status === 'PENDING'
       );
     });
-    console.log('tes pendingTransactions comp ', this.pendingTransactions)
     this.paginateTransaction()
   }
 

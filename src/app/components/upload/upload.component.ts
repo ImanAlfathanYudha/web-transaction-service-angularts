@@ -17,7 +17,6 @@ export class UploadComponent {
   }
 
   onFileSelected(event: Event) {
-    console.log('tes onFileSelected onclick ', event)
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
@@ -29,10 +28,8 @@ export class UploadComponent {
     this.csvService.uploadTransactionCSV(file).subscribe({
       next: (res) => {
         alert('✅ File uploaded successfully!');
-        console.log('tes onFileSelected response:', res);
       },
       error: (err) => {
-        console.log('tes error onFileSelected response:', );
         alert('❌ Upload failed. ' + err);
         console.error(err);
       }

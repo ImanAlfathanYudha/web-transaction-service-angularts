@@ -13,7 +13,6 @@ export class TransactionSummaryComponent {
 
   ngOnInit() {
     this.csvService.summary$.subscribe(data => {
-      console.log('tes 🔥 summary data:', data);
       this.summary = data;
     });
   }
