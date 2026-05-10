@@ -13,7 +13,7 @@
 
   <tbody *ngIf="(paginatedTransactions  | async) as data">
     <ng-container *ngIf="data.length > 0; else empty">
-      <tr *ngFor="let t of data">
+      <tr (click)="goToDetail(t.timestamp)" *ngFor="let t of data">
         <td>{{ t.timestamp }}</td>
         <td>{{ t.name }}</td>
         <td>{{ t.type }}</td>

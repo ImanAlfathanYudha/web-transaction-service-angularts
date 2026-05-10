@@ -8,6 +8,7 @@ const API_URL_GET_TRANSACTION = 'http://localhost:8800/api/v1/transaction/balanc
 const API_URL_GET_ISSUE = 'http://localhost:8800/api/v1/transaction/issues'
 const API_URL_EDIT_TRANSACTION_SUCCESS = 'http://localhost:8800/api/v1/transaction/edit'
 const API_URL_DETAIL_TRANSACTION = 'http://localhost:8800/api/v1/transaction/detail'
+const API_URL_EDIT_TRANSACTION = 'http://localhost:8800/api/v1/transaction/edit'
 @Injectable({
   providedIn: 'root'
 })
@@ -134,7 +135,6 @@ export class CsvUploadService {
     );
   }
 
-
   markTransactionAsSuccess(id: number): Observable<any> {
     return this.http.put(`${API_URL_EDIT_TRANSACTION_SUCCESS}/${id}/success`, {}).pipe(
       switchMap(() => this.getAllTransactions()),
@@ -144,5 +144,14 @@ export class CsvUploadService {
       })
     );
   }
-}
 
+  editTransaction(id: number, payloadTransaction: Transaction): Observable<any> {
+    return this.http.put(`${API_URL_EDIT_TRANSACTION}/${id}`, payloadTransaction).pipe(
+      switchMap(() => this.getAllTransactions()),
+      catchError((err) => {
+        console.error('failed to edit transaction:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+}

@@ -40,9 +40,14 @@ export class FormDetailComponent implements OnInit {
     this.csvService.getDetailTransactions(id).subscribe({
       next: (data) => {
         this.transactionForm.patchValue(data);
+        if (data.type === 'CREDIT') {
+          this.transactionForm.get('description')?.disable();
+        } else {
+          this.transactionForm.get('description')?.enable();
+        }
       },
       error: (err) => {
-        alert('Failed to load transaction detail: ' + err?.error?.Message || 'Unknown error');
+        alert('Failed to load transaction detail: ' + err?.error?.Message || ' ');
         console.error('Failed to load transaction detail:', err);
       }
     });
@@ -55,11 +60,18 @@ export class FormDetailComponent implements OnInit {
     }
 
     const updatedTransaction = this.transactionForm.getRawValue();
-
-    console.log('Submitted transaction:', updatedTransaction);
-
-    alert('Transaction updated successfully');
-    this.router.navigate(['']);
+    const transactionId = updatedTransaction.timestamp;
+    this.csvService
+      .editTransaction(transactionId, updatedTransaction)
+      .subscribe({
+        next: () => {
+          alert('Transaction updated successfully');
+          this.router.navigate(['']);
+        },
+        error: (err) => {
+          alert('Failed to update transaction: ' + err?.error?.Message || '');
+        },
+      });
   }
 
   onCancel(): void {
